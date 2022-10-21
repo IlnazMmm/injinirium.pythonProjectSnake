@@ -101,3 +101,16 @@ class Food:
     def draw(self):
         pg.draw.rect(self.game.screen, 'red', self.rect)
 
+class Score:
+    def __init__(self, game):
+        self.game = game
+        self.size = game.TILE_SIZE
+
+    def draw(self, length):
+        font = pg.font.Font(None, 42)
+        color= pg.Color('lightskyblue3')
+        txt_score = font.render("Очки: ", True, color)
+        self.game.screen.blit(txt_score, (10, 10))
+
+        txt_length = font.render(str(length), True, color)
+        self.game.screen.blit(txt_length, (100, 10))

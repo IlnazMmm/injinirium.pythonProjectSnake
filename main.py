@@ -37,6 +37,7 @@ class Game:
     def new_game(self):
         self.snake = Snake(self)
         self.food = Food(self)
+        self.score = Score(self)
 
     def update(self):
         self.snake.update()
@@ -48,6 +49,7 @@ class Game:
         self.draw_grid()
         self.food.draw()
         self.snake.draw()
+        self.score.draw(self.snake.length)
 
     def check_event(self):
         for event in pg.event.get():
@@ -106,7 +108,10 @@ class Game:
         db = sqlite3.connect("database.db")
         cursor = db.cursor()
 
-        sqlite_select_query = "SELECT * FROM players ORDER by score DESC LIMIT 5"
+        sqlite_select_query = "SELECT DISTINCT name, score " \
+                      "FROM players " \
+                      "ORDER by score DESC " \
+                      "LIMIT 5"
 
         txt_name = font.render("Имя", True, color)
         txt_score = font.render("Очки", True, color)
@@ -124,8 +129,8 @@ class Game:
             if flag:
                 for i in records:
                     y+=50
-                    name = font.render(i[1], True, color)
-                    score = font.render(str(i[2]), True, color)
+                    name = font.render(i[0], True, color)
+                    score = font.render(str(i[1]), True, color)
                     self.screen.blit(name, (x + int(self.screen_width * 0.8 / 2), y))
                     self.screen.blit(score, (x + int(self.screen_width / 2), y))
                     pg.display.update()
@@ -138,7 +143,7 @@ class Game:
     def write_name(self):
         font = pg.font.Font(None, 32)
         clock = pg.time.Clock()
-        input_box = pg.Rect(450, 450, 140, 32)
+        input_box = pg.Rect(self.screen_width*0.8//2, self.screen_height//2, 140, 32)
         color_inactive = pg.Color('lightskyblue3')
         color_active = pg.Color('dodgerblue2')
         color = color_inactive
