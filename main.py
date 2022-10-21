@@ -1,15 +1,21 @@
 from game_objects import *
 import sqlite3
 import sys
+import tkinter as tk
+
 
 class Game:
 
     def __init__(self):
+        root = tk.Tk()
+
+        self.screen_width = round(root.winfo_screenwidth()*0.9)
+        self.screen_height = round(root.winfo_screenheight()*0.9)
 
         pg.init()
         self.WINDOW_SIZE = 1000
         self.TILE_SIZE = 50
-        self.screen = pg.display.set_mode([self.WINDOW_SIZE] * 2)
+        self.screen = pg.display.set_mode([self.screen_width, self.screen_height])
         self.clock = pg.time.Clock()
         self.text = ''
         self.new_game()
@@ -23,10 +29,10 @@ class Game:
                     )""")
 
     def draw_grid(self):
-        [pg.draw.line(self.screen, [50] * 3, (x, 0), (x, self.WINDOW_SIZE))
-                                             for x in range(0, self.WINDOW_SIZE, self.TILE_SIZE)]
-        [pg.draw.line(self.screen, [50] * 3, (0, y), (self.WINDOW_SIZE, y))
-                                             for y in range(0, self.WINDOW_SIZE, self.TILE_SIZE)]
+        [pg.draw.line(self.screen, [50] * 3, (x, 0), (x,  self.screen_height))
+                                             for x in range(0, self.screen_width , self.TILE_SIZE)]
+        [pg.draw.line(self.screen, [50] * 3, (0, y), (self.screen_width, y))
+                                             for y in range(0, self.screen_height, self.TILE_SIZE)]
 
     def new_game(self):
         self.snake = Snake(self)
