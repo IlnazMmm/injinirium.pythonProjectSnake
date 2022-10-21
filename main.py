@@ -99,7 +99,7 @@ class Game:
     def show_results(self):
         font = pg.font.Font(None, 32)
         x = 0
-        y = 250
+        y = int(self.screen_height * 0.8 / 2)
         color_inactive = pg.Color('lightskyblue3')
         color = color_inactive
 
@@ -110,8 +110,8 @@ class Game:
 
         txt_name = font.render("Имя", True, color)
         txt_score = font.render("Очки", True, color)
-        self.screen.blit(txt_name, (x + 420, y))
-        self.screen.blit(txt_score, (x + 560, y))
+        self.screen.blit(txt_name, (x + int(self.screen_width * 0.8/ 2), y))
+        self.screen.blit(txt_score, (x + int(self.screen_width  / 2), y))
 
         cursor.execute(sqlite_select_query)
         records = cursor.fetchall()
@@ -126,8 +126,8 @@ class Game:
                     y+=50
                     name = font.render(i[1], True, color)
                     score = font.render(str(i[2]), True, color)
-                    self.screen.blit(name, (x + 420, y))
-                    self.screen.blit(score, (x + 560, y))
+                    self.screen.blit(name, (x + int(self.screen_width * 0.8 / 2), y))
+                    self.screen.blit(score, (x + int(self.screen_width / 2), y))
                     pg.display.update()
                 flag = False
         pygame.quit()
@@ -162,7 +162,8 @@ class Game:
                         elif event.key == pg.K_BACKSPACE:
                             self.text = self.text[:-1]
                         else:
-                            self.text += event.unicode
+                            if (len(self.text)<10):
+                                self.text += event.unicode
 
             self.screen.fill((30, 30, 30))
 
