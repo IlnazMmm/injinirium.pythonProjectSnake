@@ -10,7 +10,8 @@ class Snake:
         self.game = game
         self.size = game.TILE_SIZE
         self.rect = pg.rect.Rect([0, 0, game.TILE_SIZE - 2, game.TILE_SIZE - 2])
-        self.range = (self.size // 2, self.game.WINDOW_SIZE - self.size // 2, self.size)
+        self.range_height = (self.size // 2, self.game.screen_height - self.size // 2, self.size)
+        self.range_width = (self.size // 2, self.game.screen_width - self.size // 2, self.size)
         self.rect.center = self.get_random_position()
         self.direction = vec2(0, 0)
         self.step_delay = 100
@@ -45,16 +46,16 @@ class Snake:
         return False
 
     def get_random_position(self):
-        return [randrange(*self.range), randrange(*self.range)]
+        return [randrange(*self.range_width), randrange(*self.range_height)]
 
     def check_borders(self):
-        if self.rect.left < 0 or self.rect.right > self.game.WINDOW_SIZE:
+        if self.rect.left < 0 or self.rect.right > self.game.screen_width:
             self.game.input_name()
             self.game.input_score(self.length)
             self.game.show_results()
             pg.quit()
             sys.exit()
-        if self.rect.top < 0 or self.rect.bottom > self.game.WINDOW_SIZE:
+        if self.rect.top < 0 or self.rect.bottom > self.game.screen_height:
             self.game.input_name()
             self.game.input_score(self.length)
             self.game.show_results()
