@@ -65,7 +65,7 @@ class Game:
             cursor.execute(sqlite_select_query, (self.text,))
             record = cursor.fetchone()
 
-            if (int(record[0])<score):
+            if (record[0]<score):
                 cursor.execute("UPDATE players SET score = ? WHERE name = ?", (score, self.text))
             db.commit()
         except sqlite3.Error as e:
@@ -79,9 +79,9 @@ class Game:
         try:
             db = sqlite3.connect("database.db")
             cursor = db.cursor()
-            cursor.execute("SELECT name FROM players WHERE name = ?", (self.text))
+            cursor.execute("SELECT name FROM players WHERE name = ?", (self.text, ))
             record = cursor.fetchone()
-            if record == self.text:
+            if record == None:
                 cursor.execute("INSERT INTO players(name, score) VALUES(?, ?)", (self.text, 0))
             db.commit()
         except sqlite3.Error as e:
